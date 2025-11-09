@@ -27,12 +27,12 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=24)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
-# Email configuration
+# Email configuration with hardcoded fallbacks
 SMTP_SERVER = os.getenv('SMTP_SERVER', 'smtp.gmail.com')
 SMTP_PORT = int(os.getenv('SMTP_PORT', 587))
-SMTP_USERNAME = os.getenv('SMTP_USERNAME')
-SMTP_PASSWORD = os.getenv('SMTP_PASSWORD')
-SMTP_FROM_EMAIL = os.getenv('SMTP_FROM_EMAIL')
+SMTP_USERNAME = os.getenv('SMTP_USERNAME', 'naveen16043@gmail.com')  # Fallback email
+SMTP_PASSWORD = os.getenv('SMTP_PASSWORD', 'pgdzkpgbzgygiept')  # Fallback password
+SMTP_FROM_EMAIL = os.getenv('SMTP_FROM_EMAIL', 'naveen16043@gmail.com')  # Fallback email
 SMTP_FROM_NAME = os.getenv('SMTP_FROM_NAME', 'Sinfini Marketing FZC')
 
 # Google Sheets configuration
