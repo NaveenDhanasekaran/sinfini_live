@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+
+{% block title %}Products - Sinfini Marketing FZC{% endblock %}
+
+{% block content %}
+<!-- Hero Section - Match React styling -->
+<div class="pt-20">
+    <section class="relative h-96 bg-gradient-to-r from-navy-900 to-navy-800 text-white">
+        <div class="absolute inset-0 opacity-20">
+            <img src="{{ url_for('static', filename='image/Bannerhero.jpg') }}" alt="Products" class="w-full h-full object-cover">
+        </div>
+        <div class="relative h-full flex items-center">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-center">
+                <h1 class="text-5xl md:text-6xl font-bold mb-4">Our Products</h1>
+                <p class="text-xl text-gold-300">
+                    Discover our extensive collection of premium textile products exported worldwide
+                </p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Products Section -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <!-- Filter Section -->
+        <div class="mb-8">
+            <div class="flex flex-wrap gap-4 justify-center">
+                <button onclick="filterProducts('all')" class="filter-btn active bg-gold-500 text-white px-6 py-2 rounded-full transition-colors">
+                    All Products
+                </button>
+                <button onclick="filterProducts('cotton')" class="filter-btn bg-white text-gray-700 hover:bg-gold-500 hover:text-white px-6 py-2 rounded-full transition-colors">
+                    Cotton
+                </button>
+                <button onclick="filterProducts('silk')" class="filter-btn bg-white text-gray-700 hover:bg-gold-500 hover:text-white px-6 py-2 rounded-full transition-colors">
+                    Silk
+                </button>
+                <button onclick="filterProducts('wool')" class="filter-btn bg-white text-gray-700 hover:bg-gold-500 hover:text-white px-6 py-2 rounded-full transition-colors">
+                    Wool
+                </button>
+                <button onclick="filterProducts('synthetic')" class="filter-btn bg-white text-gray-700 hover:bg-gold-500 hover:text-white px-6 py-2 rounded-full transition-colors">
+                    Synthetic
+                </button>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="product-grid" id="products-container">
+            <!-- Hardcoded Products with actual images -->
+            
+            <!-- Cotton Products -->
+            <div class="product-card" data-category="cotton">
+                <img src="{{ url_for('static', filename='image/Cotton 3pc Bed Sheets/PHOTO-2025-11-02-14-38-54.jpg') }}" alt="Cotton 3pc Bed Sheets" class="product-image">
+                <div class="p-6">
+                    <div class="mb-3">
+                        <span class="bg-gold-100 text-gold-800 px-3 py-1 rounded-full text-sm font-medium">Cotton</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy-800 mb-3">Cotton 3pc Bed Sheets</h3>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">Premium quality cotton bed sheets set including fitted sheet, flat sheet, and pillowcase. Soft, breathable, and durable fabric perfect for comfortable sleep.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gold-600 font-semibold hover:text-gold-700">View Details</span>
+                        <i class="fas fa-arrow-right text-gold-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="cotton">
+                <img src="{{ url_for('static', filename='image/Cotton Towels/PHOTO-2025-11-02-14-40-11.jpg') }}" alt="Cotton Towels" class="product-image">
+                <div class="p-6">
+                    <div class="mb-3">
+                        <span class="bg-gold-100 text-gold-800 px-3 py-1 rounded-full text-sm font-medium">Cotton</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy-800 mb-3">Premium Cotton Towels</h3>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">High-quality cotton towels with excellent absorbency and softness. Available in various sizes and colors, perfect for hotels and homes.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gold-600 font-semibold hover:text-gold-700">View Details</span>
+                        <i class="fas fa-arrow-right text-gold-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="cotton">
+                <img src="{{ url_for('static', filename='image/Cotton 3pc Bed Sheets/PHOTO-2025-11-02-14-39-00.jpg') }}" alt="Luxury Cotton Bed Sheets" class="product-image">
+                <div class="p-6">
+                    <div class="mb-3">
+                        <span class="bg-gold-100 text-gold-800 px-3 py-1 rounded-full text-sm font-medium">Cotton</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy-800 mb-3">Luxury Cotton Bed Sheets</h3>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">Luxurious cotton bed sheets with elegant patterns and superior comfort. Thread count optimized for durability and softness.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gold-600 font-semibold hover:text-gold-700">View Details</span>
+                        <i class="fas fa-arrow-right text-gold-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="cotton">
+                <img src="{{ url_for('static', filename='image/Cotton Towels/PHOTO-2025-11-02-14-40-13.jpg') }}" alt="Deluxe Bath Towel Set" class="product-image">
+                <div class="p-6">
+                    <div class="mb-3">
+                        <span class="bg-gold-100 text-gold-800 px-3 py-1 rounded-full text-sm font-medium">Cotton</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy-800 mb-3">Deluxe Bath Towel Set</h3>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">Complete bath towel set with superior absorption and quick-dry technology. Ideal for luxury hotels and premium residential use.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gold-600 font-semibold hover:text-gold-700">View Details</span>
+                        <i class="fas fa-arrow-right text-gold-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Synthetic Products -->
+            <div class="product-card" data-category="synthetic">
+                <img src="{{ url_for('static', filename='image/Mystic Ready Made Indian Salwar/PHOTO-2025-11-02-14-36-49.jpg') }}" alt="Mystic Ready Made Indian Salwar" class="product-image">
+                <div class="p-6">
+                    <div class="mb-3">
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">Synthetic</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy-800 mb-3">Mystic Ready Made Indian Salwar</h3>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">Beautiful traditional Indian salwar suits with intricate designs and premium synthetic fabric. Perfect for cultural events and daily wear.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gold-600 font-semibold hover:text-gold-700">View Details</span>
+                        <i class="fas fa-arrow-right text-gold-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="synthetic">
+                <img src="{{ url_for('static', filename='image/Mystic Ready Made Indian Salwar/PHOTO-2025-11-02-14-36-51 4.jpg') }}" alt="Designer Salwar Suit" class="product-image">
+                <div class="p-6">
+                    <div class="mb-3">
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">Synthetic</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy-800 mb-3">Designer Salwar Suit</h3>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">Elegant designer salwar suit with contemporary styling and traditional craftsmanship. Perfect for special occasions and festivities.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gold-600 font-semibold hover:text-gold-700">View Details</span>
+                        <i class="fas fa-arrow-right text-gold-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="synthetic">
+                <img src="{{ url_for('static', filename='image/Mystic Ready Made Indian Salwar/PHOTO-2025-11-02-14-36-50.jpg') }}" alt="Traditional Salwar Collection" class="product-image">
+                <div class="p-6">
+                    <div class="mb-3">
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">Synthetic</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy-800 mb-3">Traditional Salwar Collection</h3>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">Authentic traditional salwar suits with vibrant colors and intricate embroidery. Made with high-quality synthetic fabrics for durability.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gold-600 font-semibold hover:text-gold-700">View Details</span>
+                        <i class="fas fa-arrow-right text-gold-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="synthetic">
+                <img src="{{ url_for('static', filename='image/Mystic Ready Made Indian Salwar/PHOTO-2025-11-02-14-36-53.jpg') }}" alt="Premium Synthetic Salwar" class="product-image">
+                <div class="p-6">
+                    <div class="mb-3">
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">Synthetic</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy-800 mb-3">Premium Synthetic Salwar</h3>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">Premium quality synthetic salwar suits with modern designs and comfortable fit. Ideal for both casual and formal occasions.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gold-600 font-semibold hover:text-gold-700">View Details</span>
+                        <i class="fas fa-arrow-right text-gold-600"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Product Modal -->
+<div id="product-modal" class="modal">
+    <div class="modal-content">
+        <!-- Content will be loaded dynamically -->
+    </div>
+</div>1
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Filter products with hardcoded HTML
+function filterProducts(category) {
+    // Update filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-gold-500', 'text-white');
+        btn.classList.add('bg-white', 'text-gray-700');
+    });
+    
+    event.target.classList.add('active', 'bg-gold-500', 'text-white');
+    event.target.classList.remove('bg-white', 'text-gray-700');
+    
+    // Show/hide products based on category
+    const allProductCards = document.querySelectorAll('.product-card');
+    
+    allProductCards.forEach(card => {
+        if (category === 'all') {
+            card.style.display = 'block';
+        } else {
+            const productCategory = card.getAttribute('data-category');
+            if (productCategory === category) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        }
+    });
+}
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', function() {
+    // Show all products by default
+    filterProducts('all');
+    
+    // Set the "All Products" button as active by default
+    document.querySelector('.filter-btn').classList.add('active', 'bg-gold-500', 'text-white');
+    document.querySelector('.filter-btn').classList.remove('bg-white', 'text-gray-700');
+});
+</script>
+{% endblock %}

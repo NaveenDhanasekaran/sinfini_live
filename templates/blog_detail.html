@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block title %}Blog Post - Sinfini Marketing FZC{% endblock %}
+
+{% block content %}
+<!-- Blog Post Content -->
+<article class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+            <!-- Loading State -->
+            <div id="loading" class="text-center py-12">
+                <div class="loading mx-auto mb-4"></div>
+                <p class="text-gray-600">Loading blog post...</p>
+            </div>
+
+            <!-- Blog Post Content -->
+            <div id="blog-content" class="hidden">
+                <!-- Content will be loaded here -->
+            </div>
+
+            <!-- Error State -->
+            <div id="error-state" class="text-center py-12 hidden">
+                <i class="fas fa-exclamation-triangle text-6xl text-gray-300 mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-600 mb-2">Blog post not found</h3>
+                <p class="text-gray-500 mb-6">The blog post you're looking for doesn't exist or has been removed.</p>
+                <a href="/blog" class="btn-primary">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to Blog
+                </a>
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- Related Posts -->
+<section class="py-16 bg-gray-50" id="related-posts" style="display: none;">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold text-navy-800 mb-8">Related Posts</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="related-posts-container">
+                <!-- Related posts will be loaded here -->
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Get post ID from URL
+const postId = parseInt('{{ post_id }}');
+
+// Load blog post on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadBlogPost();
+});
+
+// Load blog post from API
+async function loadBlogPost() {
+    try {
+        const response = await fetch(`/api/blog/${postId}`);
+        
+        if (!response.ok) {
+            throw new Error('Post not found');
+        }
+        
+        const post = await response.json();
+        
+        document.getElementById('loading').classList.add('hidden');
+        displayBlogPost(post);
+        loadRelatedPosts();
+        
+    } catch (error) {
+        console.error('Error loading blog post:', error);
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('error-state').classList.remove('hidden');
+    }
+}
+
+// Display blog post
+function displayBlogPost(post) {
+    const container = document.getElementById('blog-content');
+    
+    // Update page title
+    document.title = `${post.title} - Sinfini Marketing FZC`;
+    
+    container.innerHTML = `
+        <!-- Back Button -->
+        <div class="mb-8">
+            <a href="/blog" class="inline-flex items-center text-gold-600 hover:text-gold-700 transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>Back to Blog
+            </a>
+        </div>
+
+        <!-- Post Header -->
+        <header class="mb-8">
+            <h1 class="text-4xl font-bold text-navy-800 mb-4">${post.title}</h1>
+            
+            <div class="flex items-center text-gray-600 mb-6">
+                <div class="flex items-center mr-6">
+                    <i class="fas fa-user mr-2"></i>
+                    <span>${post.author}</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-calendar mr-2"></i>
+                    <span>${new Date(post.created_at).toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    })}</span>
+                </div>
+            </div>
+
+            ${post.image_url ? `
+                <img src="${post.image_url}" alt="${post.title}" class="w-full h-96 object-cover rounded-xl mb-8">
+            ` : ''}
+        </header>
+
+        <!-- Post Content -->
+        <div class="blog-content prose prose-lg max-w-none">
+            ${post.content}
+        </div>
+
+        <!-- Share Buttons -->
+        <div class="mt-12 pt-8 border-t border-gray-200">
+            <h3 class="text-lg font-semibold text-navy-800 mb-4">Share this post</h3>
+            <div class="flex space-x-4">
+                <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}" 
+                   target="_blank" 
+                   class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                    <i class="fab fa-facebook mr-2"></i>Facebook
+                </a>
+                <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(post.title)}" 
+                   target="_blank" 
+                   class="bg-blue-400 hover:bg-blue-500 text-white px-4 py-2 rounded-lg transition-colors">
+                    <i class="fab fa-twitter mr-2"></i>Twitter
+                </a>
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}" 
+                   target="_blank" 
+                   class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg transition-colors">
+                    <i class="fab fa-linkedin mr-2"></i>LinkedIn
+                </a>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="mt-12 bg-navy-800 text-white p-8 rounded-xl text-center">
+            <h3 class="text-2xl font-bold mb-4">Interested in Our Products?</h3>
+            <p class="text-gray-200 mb-6">Get in touch with our team to learn more about our textile export services.</p>
+            <a href="/contact" class="btn-primary">
+                <i class="fas fa-envelope mr-2"></i>Contact Us
+            </a>
+        </div>
+    `;
+    
+    container.classList.remove('hidden');
+}
+
+// Load related posts
+async function loadRelatedPosts() {
+    try {
+        const response = await fetch('/api/blog');
+        const allPosts = await response.json();
+        
+        // Filter out current post and get up to 2 related posts
+        const relatedPosts = allPosts
+            .filter(post => post.id !== postId)
+            .slice(0, 2);
+        
+        if (relatedPosts.length > 0) {
+            displayRelatedPosts(relatedPosts);
+            document.getElementById('related-posts').style.display = 'block';
+        }
+        
+    } catch (error) {
+        console.error('Error loading related posts:', error);
+    }
+}
+
+// Display related posts
+function displayRelatedPosts(posts) {
+    const container = document.getElementById('related-posts-container');
+    
+    container.innerHTML = posts.map(post => `
+        <article class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+            ${post.image_url ? `
+                <img src="${post.image_url}" alt="${post.title}" class="w-full h-40 object-cover">
+            ` : `
+                <div class="w-full h-40 bg-gray-200 flex items-center justify-center">
+                    <i class="fas fa-newspaper text-gray-400 text-3xl"></i>
+                </div>
+            `}
+            <div class="p-6">
+                <div class="flex items-center text-sm text-gray-500 mb-3">
+                    <i class="fas fa-calendar mr-2"></i>
+                    <span>${new Date(post.created_at).toLocaleDateString()}</span>
+                </div>
+                
+                <h3 class="text-lg font-bold text-navy-800 mb-3 line-clamp-2">
+                    <a href="/blog/${post.id}" class="hover:text-gold-600 transition-colors">
+                        ${post.title}
+                    </a>
+                </h3>
+                
+                <p class="text-gray-600 text-sm mb-4 line-clamp-2">
+                    ${post.content.replace(/<[^>]*>/g, '').substring(0, 100)}...
+                </p>
+                
+                <a href="/blog/${post.id}" class="inline-flex items-center text-gold-600 hover:text-gold-700 font-semibold transition-colors text-sm">
+                    Read More
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </article>
+    `).join('');
+}
+</script>
+{% endblock %}

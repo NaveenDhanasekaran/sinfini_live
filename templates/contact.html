@@ -1,0 +1,373 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us - Sinfini Marketing FZC{% endblock %}
+
+{% block content %}
+<!-- Hero Section - Match React styling -->
+<div class="pt-20">
+    <section class="relative h-96 bg-gradient-to-r from-navy-900 to-navy-800 text-white">
+        <div class="absolute inset-0 opacity-20">
+            <img src="{{ url_for('static', filename='image/Bannerhero.jpg') }}" alt="Contact" class="w-full h-full object-cover">
+        </div>
+        <div class="relative h-full flex items-center">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-center">
+                <h1 class="text-5xl md:text-6xl font-bold mb-4">Contact Us</h1>
+                <p class="text-xl text-gold-300">
+                    Get in touch with our team for all your textile export needs
+                </p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Contact Section -->
+<section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            <!-- Contact Form -->
+            <div class="bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-bold text-navy-800 mb-6">Send us a Message</h2>
+                
+                <form id="contact-form" onsubmit="event.preventDefault(); submitContactForm();">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="form-group">
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                            <input type="text" id="name" name="name" required class="form-control" placeholder="Your full name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                            <input type="email" id="email" name="email" required class="form-control" placeholder="your.email@example.com">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="form-group">
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" class="form-control" placeholder="+971 XX XXX XXXX">
+                        </div>
+                        <div class="form-group">
+                            <label for="company" class="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
+                            <input type="text" id="company" name="company" class="form-control" placeholder="Your company name">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mb-6">
+                        <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">Subject *</label>
+                        <select id="subject" name="subject" required class="form-control">
+                            <option value="">Select a subject</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="quote">Request Quote</option>
+                            <option value="partnership">Partnership</option>
+                            <option value="support">Customer Support</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group mb-6">
+                        <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Message *</label>
+                        <textarea id="message" name="message" required rows="6" class="form-control" placeholder="Tell us about your requirements or inquiry..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary w-full text-lg py-3">
+                        <i class="fas fa-paper-plane mr-2"></i>Send Message
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Contact Information -->
+            <div class="space-y-8">
+                <!-- Contact Details -->
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold text-navy-800 mb-6">Get in Touch</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-gold-100 text-gold-600 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-map-marker-alt text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-navy-800 mb-1">Address</h4>
+                                <p class="text-gray-600">
+                                    Sinfini Marketing FZC<br>
+                                    Sharjah, United Arab Emirates
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-gold-100 text-gold-600 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-phone text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-navy-800 mb-1">Phone</h4>
+                                <p class="text-gray-600">+971 XXX XXXX</p>
+                                <p class="text-gray-600">+971 XXX XXXX</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-gold-100 text-gold-600 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-envelope text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-navy-800 mb-1">Email</h4>
+                                <p class="text-gray-600">info@sinfinimarketing.com</p>
+                                <p class="text-gray-600">sales@sinfinimarketing.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-gold-100 text-gold-600 w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-clock text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-navy-800 mb-1">Business Hours</h4>
+                                <p class="text-gray-600">
+                                    Monday - Friday: 9:00 AM - 6:00 PM<br>
+                                    Saturday: 9:00 AM - 2:00 PM<br>
+                                    Sunday: Closed
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Social Media -->
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold text-navy-800 mb-6">Follow Us</h3>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <a href="#" class="flex items-center space-x-3 p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
+                            <i class="fab fa-facebook text-blue-600 text-xl"></i>
+                            <span class="text-gray-700">Facebook</span>
+                        </a>
+                        
+                        <a href="#" class="flex items-center space-x-3 p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
+                            <i class="fab fa-linkedin text-blue-600 text-xl"></i>
+                            <span class="text-gray-700">LinkedIn</span>
+                        </a>
+                        
+                        <a href="#" class="flex items-center space-x-3 p-3 bg-pink-50 hover:bg-pink-100 rounded-lg transition-colors">
+                            <i class="fab fa-instagram text-pink-600 text-xl"></i>
+                            <span class="text-gray-700">Instagram</span>
+                        </a>
+                        
+                        <a href="#" class="flex items-center space-x-3 p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
+                            <i class="fab fa-twitter text-blue-600 text-xl"></i>
+                            <span class="text-gray-700">Twitter</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Quick Contact -->
+                <div class="bg-navy-800 text-white p-8 rounded-xl">
+                    <h3 class="text-xl font-bold mb-4">Need Immediate Assistance?</h3>
+                    <p class="text-gray-200 mb-6">
+                        Our team is ready to help you with your textile export requirements.
+                    </p>
+                    
+                    <div class="space-y-3">
+                        <a href="tel:+971XXXXXXX" class="flex items-center space-x-3 text-gold-400 hover:text-gold-300 transition-colors">
+                            <i class="fas fa-phone"></i>
+                            <span>Call us now</span>
+                        </a>
+                        
+                        <a href="mailto:info@sinfinimarketing.com" class="flex items-center space-x-3 text-gold-400 hover:text-gold-300 transition-colors">
+                            <i class="fas fa-envelope"></i>
+                            <span>Send an email</span>
+                        </a>
+                        
+                        <button onclick="toggleChatbot()" class="flex items-center space-x-3 text-gold-400 hover:text-gold-300 transition-colors">
+                            <i class="fas fa-comments"></i>
+                            <span>Start live chat</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-navy-900 mb-4">Find Us</h2>
+            <p class="text-xl text-navy-700">Located in the heart of Sharjah, UAE</p>
+        </div>
+        
+        <div class="bg-gray-100 rounded-xl overflow-hidden shadow-lg" style="height: 450px;">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115681.57939721936!2d55.47515!3d25.33063!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ef5f43348a67a7b%3A0x1950c5a866777b1c!2sSharjah%20-%20United%20Arab%20Emirates!5e0!3m2!1sen!2s!4v1699123456789!5m2!1sen!2s"
+                width="100%" 
+                height="100%" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+        
+        <div class="mt-8 text-center">
+            <div class="inline-flex items-center space-x-2 bg-navy-900 text-white px-6 py-3 rounded-lg">
+                <i class="fas fa-map-marker-alt text-gold-400"></i>
+                <span class="font-semibold">Sinfini Marketing FZC, Sharjah, UAE</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-navy-800 mb-4">Frequently Asked Questions</h2>
+            <p class="text-xl text-gray-600">Common questions about our services</p>
+        </div>
+        
+        <div class="max-w-3xl mx-auto space-y-4">
+            <div class="bg-white rounded-lg shadow-sm">
+                <button class="w-full text-left p-6 focus:outline-none" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-navy-800">What types of textiles do you export?</h3>
+                        <i class="fas fa-chevron-down text-gold-500 transform transition-transform"></i>
+                    </div>
+                </button>
+                <div class="faq-content hidden px-6 pb-6">
+                    <p class="text-gray-600">We export a wide range of textiles including cotton, silk, wool, synthetic fabrics, and specialty materials. Our product catalog includes fabrics for fashion, home textiles, industrial applications, and more.</p>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-sm">
+                <button class="w-full text-left p-6 focus:outline-none" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-navy-800">What are your minimum order quantities?</h3>
+                        <i class="fas fa-chevron-down text-gold-500 transform transition-transform"></i>
+                    </div>
+                </button>
+                <div class="faq-content hidden px-6 pb-6">
+                    <p class="text-gray-600">Minimum order quantities vary by product type and destination. We work with both small and large orders, and our team can provide specific MOQ information based on your requirements.</p>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-sm">
+                <button class="w-full text-left p-6 focus:outline-none" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-navy-800">How long does shipping take?</h3>
+                        <i class="fas fa-chevron-down text-gold-500 transform transition-transform"></i>
+                    </div>
+                </button>
+                <div class="faq-content hidden px-6 pb-6">
+                    <p class="text-gray-600">Shipping times depend on the destination and shipping method. Typically, sea freight takes 2-4 weeks, while air freight takes 3-7 days. We provide tracking information for all shipments.</p>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-sm">
+                <button class="w-full text-left p-6 focus:outline-none" onclick="toggleFaq(this)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-navy-800">Do you provide samples?</h3>
+                        <i class="fas fa-chevron-down text-gold-500 transform transition-transform"></i>
+                    </div>
+                </button>
+                <div class="faq-content hidden px-6 pb-6">
+                    <p class="text-gray-600">Yes, we provide samples for most of our products. Sample costs and shipping charges may apply, which can often be credited against your first order.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function toggleFaq(button) {
+    const content = button.nextElementSibling;
+    const icon = button.querySelector('i');
+    
+    content.classList.toggle('hidden');
+    icon.classList.toggle('rotate-180');
+}
+
+async function submitContactForm() {
+    const form = document.getElementById('contact-form');
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalButtonText = submitButton.innerHTML;
+    
+    // Disable submit button and show loading state
+    submitButton.disabled = true;
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
+    
+    try {
+        // Get form data
+        const formData = new FormData(form);
+        const data = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+            company: formData.get('company'),
+            subject: formData.get('subject'),
+            message: formData.get('message')
+        };
+        
+        // Send request
+        const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            // Success
+            showNotification('Message sent successfully! We will get back to you soon.', 'success');
+            form.reset();
+        } else {
+            // Error
+            showNotification(result.error || 'Failed to send message. Please try again.', 'error');
+        }
+        
+    } catch (error) {
+        console.error('Error submitting form:', error);
+        showNotification('Network error. Please check your connection and try again.', 'error');
+    } finally {
+        // Re-enable submit button
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalButtonText;
+    }
+}
+
+function showNotification(message, type) {
+    // Remove existing notifications
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notification => notification.remove());
+    
+    // Create notification
+    const notification = document.createElement('div');
+    notification.className = `notification fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-md ${
+        type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+    }`;
+    
+    notification.innerHTML = `
+        <div class="flex items-center space-x-2">
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+            <span>${message}</span>
+            <button onclick="this.parentElement.parentElement.remove()" class="ml-auto">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.remove();
+        }
+    }, 5000);
+}
+</script>
+{% endblock %}

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery Management - Sinfini Marketing FZC</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-navy-800 text-white">
+            <div class="p-6">
+                <div class="flex items-center space-x-2 mb-8">
+                    <i class="fas fa-industry text-gold-500 text-2xl"></i>
+                    <span class="text-xl font-bold">Sinfini Admin</span>
+                </div>
+                
+                <nav class="space-y-2">
+                    <a href="/admin/dashboard" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-navy-700 transition-colors">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="/admin/products" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-navy-700 transition-colors">
+                        <i class="fas fa-box"></i>
+                        <span>Products</span>
+                    </a>
+                    <a href="/admin/blog" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-navy-700 transition-colors">
+                        <i class="fas fa-edit"></i>
+                        <span>Blog</span>
+                    </a>
+                    <a href="/admin/gallery" class="flex items-center space-x-3 p-3 rounded-lg bg-gold-600 text-navy-900 font-medium">
+                        <i class="fas fa-images"></i>
+                        <span>Gallery</span>
+                    </a>
+                    <a href="/admin/chatbot" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-navy-700 transition-colors">
+                        <i class="fas fa-robot"></i>
+                        <span>Chatbot</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="absolute bottom-0 w-64 p-6">
+                <button onclick="logout()" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-navy-700 transition-colors w-full text-left">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-auto">
+            <div class="p-8">
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold text-navy-800">Gallery Management</h1>
+                        <p class="text-gray-600 mt-2">Upload and manage media files</p>
+                    </div>
+                    <button onclick="openAddModal()" class="btn-primary">
+                        <i class="fas fa-plus mr-2"></i>Upload Media
+                    </button>
+                </div>
+
+                <!-- Gallery Grid -->
+                <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Gallery items will be loaded here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Media Modal -->
+    <div id="media-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+            <h3 id="modal-title" class="text-2xl font-bold text-navy-800 mb-6">Upload Media</h3>
+            
+            <form id="media-form" enctype="multipart/form-data">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Media File</label>
+                        <input type="file" name="file" required accept="image/*,video/*" class="form-control">
+                        <p class="text-xs text-gray-500 mt-1">Supported: Images (JPG, PNG, GIF, WebP) and Videos (MP4, WebM, OGG)</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Title</label>
+                        <input type="text" name="title" class="form-control">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                        <textarea name="description" rows="3" class="form-control"></textarea>
+                    </div>
+                </div>
+                
+                <div class="flex space-x-4 mt-6">
+                    <button type="submit" class="btn-primary flex-1">Upload</button>
+                    <button type="button" onclick="closeModal()" class="btn-secondary flex-1">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    // Check authentication
+    document.addEventListener('DOMContentLoaded', function() {
+        const token = localStorage.getItem('admin_token');
+        if (!token) {
+            window.location.href = '/admin/login';
+            return;
+        }
+
+        // Verify token
+        fetch('/api/auth/verify', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Invalid token');
+            }
+            return response.json();
+        })
+        .then(data => {
+            loadGalleryItems();
+        })
+        .catch(error => {
+            console.error('Auth error:', error);
+            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_user');
+            window.location.href = '/admin/login';
+        });
+    });
+
+    // Load gallery items
+    async function loadGalleryItems() {
+        try {
+            const response = await fetch('/api/gallery');
+            const items = await response.json();
+            
+            const grid = document.getElementById('gallery-grid');
+            grid.innerHTML = items.map(item => `
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+                    <div class="relative aspect-w-16 aspect-h-12">
+                        ${item.media_type === 'video' ? 
+                            `<video src="${item.media_url}" class="w-full h-48 object-cover" controls></video>` :
+                            `<img src="${item.media_url}" alt="${item.title}" class="w-full h-48 object-cover">`
+                        }
+                        <div class="absolute top-3 right-3">
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${item.media_type === 'video' ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800'}">
+                                <i class="fas fa-${item.media_type === 'video' ? 'video' : 'image'} mr-1"></i>
+                                ${item.media_type}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">${item.title || 'Untitled Media'}</h3>
+                        <p class="text-gray-600 text-sm mb-4 leading-relaxed">${item.description || 'No description available'}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-gray-500">
+                                <i class="fas fa-calendar mr-1"></i>
+                                ${new Date(item.created_at || Date.now()).toLocaleDateString()}
+                            </span>
+                            <button onclick="deleteItem(${item.id})" class="inline-flex items-center px-3 py-1.5 bg-red-50 text-red-700 text-sm font-medium rounded-md hover:bg-red-100 transition-colors">
+                                <i class="fas fa-trash mr-1.5"></i>Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        } catch (error) {
+            console.error('Error loading gallery items:', error);
+        }
+    }
+
+    // Modal functions
+    function openAddModal() {
+        document.getElementById('media-form').reset();
+        document.getElementById('media-modal').classList.remove('hidden');
+        document.getElementById('media-modal').classList.add('flex');
+    }
+
+    function closeModal() {
+        document.getElementById('media-modal').classList.add('hidden');
+        document.getElementById('media-modal').classList.remove('flex');
+    }
+
+    // Handle form submission
+    document.getElementById('media-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const token = localStorage.getItem('admin_token');
+        
+        try {
+            const response = await fetch('/api/gallery', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
+            });
+            
+            if (response.ok) {
+                closeModal();
+                loadGalleryItems();
+            } else {
+                alert('Error uploading media');
+            }
+        } catch (error) {
+            console.error('Error uploading media:', error);
+            alert('Error uploading media');
+        }
+    });
+
+    // Delete item
+    async function deleteItem(id) {
+        if (!confirm('Are you sure you want to delete this media item?')) return;
+        
+        const token = localStorage.getItem('admin_token');
+        
+        try {
+            const response = await fetch(`/api/gallery/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            
+            if (response.ok) {
+                loadGalleryItems();
+            } else {
+                alert('Error deleting media item');
+            }
+        } catch (error) {
+            console.error('Error deleting media item:', error);
+            alert('Error deleting media item');
+        }
+    }
+
+    // Logout function
+    function logout() {
+        localStorage.removeItem('admin_token');
+        localStorage.removeItem('admin_user');
+        window.location.href = '/admin/login';
+    }
+    </script>
+</body>
+</html>

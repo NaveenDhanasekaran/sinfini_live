@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Sinfini Marketing FZC</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-navy-800 text-white shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-industry text-gold-500 text-2xl"></i>
+                    <span class="text-xl font-bold">Sinfini Admin</span>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <a href="/" target="_blank" class="hover:text-gold-400 transition-colors">
+                        <i class="fas fa-external-link-alt mr-2"></i>View Website
+                    </a>
+                    <button onclick="logout()" class="hover:text-gold-400 transition-colors">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar w-64 min-h-screen text-white">
+            <div class="p-6">
+                <nav class="space-y-2">
+                    <a href="/admin/dashboard" class="flex items-center space-x-3 p-3 bg-gold-500 rounded-lg">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="/admin/products" class="flex items-center space-x-3 p-3 hover:bg-navy-700 rounded-lg transition-colors">
+                        <i class="fas fa-box"></i>
+                        <span>Products</span>
+                    </a>
+                    <a href="/admin/blog" class="flex items-center space-x-3 p-3 hover:bg-navy-700 rounded-lg transition-colors">
+                        <i class="fas fa-newspaper"></i>
+                        <span>Blog</span>
+                    </a>
+                    <a href="/admin/gallery" class="flex items-center space-x-3 p-3 hover:bg-navy-700 rounded-lg transition-colors">
+                        <i class="fas fa-images"></i>
+                        <span>Gallery</span>
+                    </a>
+                    <a href="/admin/chatbot" class="flex items-center space-x-3 p-3 hover:bg-navy-700 rounded-lg transition-colors">
+                        <i class="fas fa-robot"></i>
+                        <span>Chatbot</span>
+                    </a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-navy-800 mb-2">Dashboard</h1>
+                <p class="text-gray-600">Welcome to your admin dashboard</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Total Products</p>
+                            <p class="text-3xl font-bold text-gray-900" id="products-count">24</p>
+                            <p class="text-sm text-green-600 flex items-center mt-1">
+                                <i class="fas fa-arrow-up mr-1"></i>
+                                +12% from last month
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-box text-blue-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Blog Posts</p>
+                            <p class="text-3xl font-bold text-gray-900" id="blog-count">6</p>
+                            <p class="text-sm text-green-600 flex items-center mt-1">
+                                <i class="fas fa-arrow-up mr-1"></i>
+                                +3 new this week
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-edit text-green-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Gallery Items</p>
+                            <p class="text-3xl font-bold text-gray-900" id="gallery-count">4</p>
+                            <p class="text-sm text-blue-600 flex items-center mt-1">
+                                <i class="fas fa-photo-video mr-1"></i>
+                                Mixed media
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-images text-purple-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Total Views</p>
+                            <p class="text-3xl font-bold text-gray-900">1,234</p>
+                            <p class="text-sm text-green-600 flex items-center mt-1">
+                                <i class="fas fa-arrow-up mr-1"></i>
+                                +8% this month
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 bg-gold-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-eye text-gold-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div class="admin-card">
+                    <h3 class="text-lg font-bold text-navy-800 mb-4">Quick Actions</h3>
+                    <div class="space-y-3">
+                        <a href="/admin/products" class="flex items-center space-x-3 p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
+                            <i class="fas fa-plus text-blue-600"></i>
+                            <span class="text-blue-800">Add New Product</span>
+                        </a>
+                        <a href="/admin/blog" class="flex items-center space-x-3 p-3 bg-green-50 hover:bg-green-100 rounded-lg transition-colors">
+                            <i class="fas fa-edit text-green-600"></i>
+                            <span class="text-green-800">Write Blog Post</span>
+                        </a>
+                        <a href="/admin/gallery" class="flex items-center space-x-3 p-3 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors">
+                            <i class="fas fa-upload text-purple-600"></i>
+                            <span class="text-purple-800">Upload Media</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <h3 class="text-lg font-bold text-navy-800 mb-4">Recent Activity</h3>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span class="text-gray-600">New product added</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <span class="text-gray-600">Blog post published</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                            <span class="text-gray-600">Gallery updated</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <h3 class="text-lg font-bold text-navy-800 mb-4">System Status</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">Database</span>
+                            <span class="text-green-600 flex items-center">
+                                <i class="fas fa-check-circle mr-1"></i>Online
+                            </span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">Storage</span>
+                            <span class="text-green-600 flex items-center">
+                                <i class="fas fa-check-circle mr-1"></i>Available
+                            </span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-600">API</span>
+                            <span class="text-green-600 flex items-center">
+                                <i class="fas fa-check-circle mr-1"></i>Running
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+    // Check authentication
+    document.addEventListener('DOMContentLoaded', function() {
+        const token = localStorage.getItem('admin_token');
+        if (!token) {
+            window.location.href = '/admin/login';
+            return;
+        }
+
+        // Verify token
+        fetch('/api/auth/verify', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Invalid token');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Load dashboard stats
+            loadDashboardStats();
+        })
+        .catch(error => {
+            console.error('Auth error:', error);
+            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_user');
+            window.location.href = '/admin/login';
+        });
+    });
+
+    // Load dashboard statistics
+    async function loadDashboardStats() {
+        const token = localStorage.getItem('admin_token');
+        
+        try {
+            const response = await fetch('/api/dashboard/stats', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            
+            if (response.ok) {
+                const stats = await response.json();
+                document.getElementById('products-count').textContent = stats.products || 0;
+                document.getElementById('blog-count').textContent = stats.blog_posts || 0;
+                document.getElementById('gallery-count').textContent = stats.gallery_items || 0;
+            }
+        } catch (error) {
+            console.error('Error loading stats:', error);
+        }
+    }
+
+    // Logout function
+    function logout() {
+        localStorage.removeItem('admin_token');
+        localStorage.removeItem('admin_user');
+        window.location.href = '/admin/login';
+    }
+    </script>
+</body>
+</html>

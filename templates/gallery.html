@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}Gallery - Sinfini Marketing FZC{% endblock %}
+
+{% block content %}
+<!-- Hero Section - Match React styling -->
+<div class="pt-20">
+    <section class="relative h-96 bg-gradient-to-r from-navy-900 to-navy-800 text-white">
+        <div class="absolute inset-0 opacity-20">
+            <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1200" alt="Gallery" class="w-full h-full object-cover">
+        </div>
+        <div class="relative h-full flex items-center">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-center">
+                <h1 class="text-5xl md:text-6xl font-bold mb-4">Our Gallery</h1>
+                <p class="text-xl text-gold-300">
+                    Explore our textile collection and manufacturing processes
+                </p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Gallery Section -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <!-- Filter Tabs -->
+        <div class="flex flex-wrap justify-center gap-4 mb-12">
+            <button onclick="filterGallery('all')" class="gallery-filter active bg-gold-500 text-white px-6 py-2 rounded-full transition-colors">
+                All Media
+            </button>
+            <button onclick="filterGallery('image')" class="gallery-filter bg-white text-gray-700 hover:bg-gold-500 hover:text-white px-6 py-2 rounded-full transition-colors">
+                Images
+            </button>
+            <button onclick="filterGallery('video')" class="gallery-filter bg-white text-gray-700 hover:bg-gold-500 hover:text-white px-6 py-2 rounded-full transition-colors">
+                Videos
+            </button>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div class="gallery-grid" id="gallery-container">
+            <!-- Gallery items will be loaded here -->
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading" class="text-center py-12">
+            <div class="loading mx-auto mb-4"></div>
+            <p class="text-gray-600">Loading gallery...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="text-center py-12 hidden">
+            <i class="fas fa-images text-6xl text-gray-300 mb-4"></i>
+            <h3 class="text-xl font-semibold text-gray-600 mb-2">No media found</h3>
+            <p class="text-gray-500">Check back later for new content.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery Modal -->
+<div id="gallery-modal" class="modal">
+    <div class="modal-content max-w-4xl">
+        <!-- Content will be loaded dynamically -->
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let allGalleryItems = [];
+let currentFilter = 'all';
+
+// Load gallery items on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadGalleryItems();
+});
+
+// Load gallery items from API
+async function loadGalleryItems() {
+    try {
+        const response = await fetch('/api/gallery');
+        allGalleryItems = await response.json();
+        
+        document.getElementById('loading').classList.add('hidden');
+        displayGalleryItems(allGalleryItems);
+    } catch (error) {
+        console.error('Error loading gallery:', error);
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('empty-state').classList.remove('hidden');
+    }
+}
+
+// Display gallery items
+function displayGalleryItems(items) {
+    const container = document.getElementById('gallery-container');
+    const emptyState = document.getElementById('empty-state');
+    
+    if (items.length === 0) {
+        container.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+    }
+    
+    emptyState.classList.add('hidden');
+    
+    container.innerHTML = items.map(item => `
+        <div class="gallery-item cursor-pointer" onclick="openGalleryLightbox('${item.media_url}', '${item.media_type}', '${item.title || 'Gallery Item'}')">
+            ${item.media_type === 'video' ? `
+                <video class="w-full h-full object-cover">
+                    <source src="${item.media_url}" type="video/mp4">
+                </video>
+                <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                    <i class="fas fa-play text-white text-4xl"></i>
+                </div>
+            ` : `
+                <img src="${item.media_url}" alt="${item.title || 'Gallery Item'}" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                    <i class="fas fa-search-plus text-white text-2xl"></i>
+                </div>
+            `}
+            ${item.title ? `
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                    <h3 class="text-white font-semibold">${item.title}</h3>
+                    ${item.description ? `<p class="text-gray-200 text-sm">${item.description}</p>` : ''}
+                </div>
+            ` : ''}
+        </div>
+    `).join('');
+}
+
+// Filter gallery items
+function filterGallery(type) {
+    currentFilter = type;
+    
+    // Update filter buttons
+    document.querySelectorAll('.gallery-filter').forEach(btn => {
+        btn.classList.remove('active', 'bg-gold-500', 'text-white');
+        btn.classList.add('bg-white', 'text-gray-700');
+    });
+    
+    event.target.classList.add('active', 'bg-gold-500', 'text-white');
+    event.target.classList.remove('bg-white', 'text-gray-700');
+    
+    // Filter and display items
+    const filteredItems = type === 'all' 
+        ? allGalleryItems 
+        : allGalleryItems.filter(item => item.media_type === type);
+    
+    displayGalleryItems(filteredItems);
+}
+</script>
+{% endblock %}

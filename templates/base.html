@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sinfini Marketing FZC{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    {% block head %}{% endblock %}
+</head>
+<body class="min-h-screen flex flex-col bg-gray-50">
+    <!-- Navigation - Fixed transparency issue -->
+    <nav class="fixed w-full z-50 transition-all duration-300 bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo - Exact React match -->
+                <a href="{{ url_for('home') }}" class="flex items-center space-x-2">
+                    <div class="bg-gradient-to-r from-navy-900 to-navy-700 text-white px-3 py-2 rounded-lg">
+                        <span class="text-2xl font-bold">SINFINI</span>
+                    </div>
+                    <div class="hidden sm:block">
+                        <div class="text-navy-900 font-semibold text-sm">MARKETING FZC</div>
+                        <div class="text-gold-600 text-xs">Premium Textiles</div>
+                    </div>
+                </a>
+                
+                <!-- Desktop Navigation - Match React styling -->
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="{{ url_for('home') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-navy-700 hover:bg-navy-100">Home</a>
+                    <a href="{{ url_for('about') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-navy-700 hover:bg-navy-100">About</a>
+                    <a href="{{ url_for('products') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-navy-700 hover:bg-navy-100">Products</a>
+                    {# <a href="{{ url_for('gallery') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-navy-700 hover:bg-navy-100">Gallery</a> #}
+                    {# <a href="{{ url_for('blog') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-navy-700 hover:bg-navy-100">Blog</a> #}
+                    <a href="{{ url_for('contact') }}" class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-navy-700 hover:bg-navy-100">Contact</a>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <button class="md:hidden p-2 rounded-lg text-navy-700 hover:bg-navy-100" onclick="toggleMobileMenu()">
+                    <i id="mobile-menu-icon" class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Mobile menu - Match React styling -->
+            <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-navy-200">
+                <div class="px-4 py-3 space-y-1">
+                    <a href="{{ url_for('home') }}" class="block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 text-navy-700 hover:bg-navy-100">Home</a>
+                    <a href="{{ url_for('about') }}" class="block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 text-navy-700 hover:bg-navy-100">About</a>
+                    <a href="{{ url_for('products') }}" class="block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 text-navy-700 hover:bg-navy-100">Products</a>
+                    {# <a href="{{ url_for('gallery') }}" class="block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 text-navy-700 hover:bg-navy-100">Gallery</a> #}
+                    {# <a href="{{ url_for('blog') }}" class="block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 text-navy-700 hover:bg-navy-100">Blog</a> #}
+                    <a href="{{ url_for('contact') }}" class="block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 text-navy-700 hover:bg-navy-100">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-navy-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-industry text-gold-500 text-2xl"></i>
+                        <span class="text-xl font-bold">Sinfini Marketing</span>
+                    </div>
+                    <p class="text-gray-300">Leading textile export company based in Sharjah, UAE, delivering quality products worldwide.</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-gold-400">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{{ url_for('about') }}" class="text-gray-300 hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="{{ url_for('products') }}" class="text-gray-300 hover:text-white transition-colors">Products</a></li>
+                        {# <li><a href="{{ url_for('gallery') }}" class="text-gray-300 hover:text-white transition-colors">Gallery</a></li> #}
+                        <li><a href="{{ url_for('contact') }}" class="text-gray-300 hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-gold-400">Contact Info</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><i class="fas fa-map-marker-alt mr-2"></i>Sharjah, UAE</li>
+                        <li><i class="fas fa-phone mr-2"></i>+971 XXX XXXX</li>
+                        <li><i class="fas fa-envelope mr-2"></i>info@sinfinimarketing.com</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-gold-400">Follow Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors"><i class="fab fa-facebook text-xl"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors"><i class="fab fa-linkedin text-xl"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors"><i class="fab fa-instagram text-xl"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+                <p>&copy; 2024 Sinfini Marketing FZC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot -->
+    <div id="chatbot" class="fixed bottom-4 right-4 z-50">
+        <button id="chatbot-toggle" class="bg-gold-500 hover:bg-gold-600 text-white rounded-full p-4 shadow-lg transition-colors">
+            <i class="fas fa-comments text-xl"></i>
+        </button>
+        
+        <div id="chatbot-window" class="hidden absolute bottom-16 right-0 w-80 bg-white rounded-lg shadow-xl border">
+            <div class="bg-navy-800 text-white p-4 rounded-t-lg">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-semibold">Chat with us</h3>
+                    <button onclick="toggleChatbot()" class="text-white hover:text-gray-300">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="chat-messages" class="p-4 h-64 overflow-y-auto bg-gray-50">
+                <div class="mb-2">
+                    <div class="bg-navy-100 text-navy-800 p-2 rounded-lg inline-block">
+                        Hello! How can I help you today?
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 border-t">
+                <div class="flex space-x-2">
+                    <input type="text" id="chat-input" placeholder="Type your message..." class="flex-1 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gold-500">
+                    <button onclick="sendMessage()" class="bg-gold-500 hover:bg-gold-600 text-white px-4 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Management - Sinfini Marketing FZC</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-navy-800 text-white">
+            <div class="p-6">
+                <div class="flex items-center space-x-2 mb-8">
+                    <i class="fas fa-industry text-gold-500 text-2xl"></i>
+                    <span class="text-xl font-bold">Sinfini Admin</span>
+                </div>
+                
+                <nav class="space-y-2">
+                    <a href="/admin/dashboard" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-navy-700 transition-colors">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="/admin/products" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-navy-700 transition-colors">
+                        <i class="fas fa-box"></i>
+                        <span>Products</span>
+                    </a>
+                    <a href="/admin/blog" class="flex items-center space-x-3 p-3 rounded-lg bg-gold-600 text-navy-900 font-medium">
+                        <i class="fas fa-edit"></i>
+                        <span>Blog</span>
+                    </a>
+                    <a href="/admin/gallery" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-navy-700 transition-colors">
+                        <i class="fas fa-images"></i>
+                        <span>Gallery</span>
+                    </a>
+                    <a href="/admin/chatbot" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-navy-700 transition-colors">
+                        <i class="fas fa-robot"></i>
+                        <span>Chatbot</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="absolute bottom-0 w-64 p-6">
+                <button onclick="logout()" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-navy-700 transition-colors w-full text-left">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-auto">
+            <div class="p-8">
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold text-navy-800">Blog Management</h1>
+                        <p class="text-gray-600 mt-2">Create and manage blog posts</p>
+                    </div>
+                    <button onclick="openAddModal()" class="btn-primary">
+                        <i class="fas fa-plus mr-2"></i>New Blog Post
+                    </button>
+                </div>
+
+                <!-- Blog Posts Grid -->
+                <div id="blog-grid" class="space-y-6">
+                    <!-- Blog posts will be loaded here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Blog Post Modal -->
+    <div id="blog-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-2xl w-full mx-4 max-h-screen overflow-y-auto">
+            <h3 id="modal-title" class="text-2xl font-bold text-navy-800 mb-6">New Blog Post</h3>
+            
+            <form id="blog-form" enctype="multipart/form-data">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Title</label>
+                        <input type="text" name="title" required class="form-control">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Author</label>
+                        <input type="text" name="author" value="Admin" class="form-control">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Content</label>
+                        <textarea name="content" rows="10" required class="form-control"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Featured Image</label>
+                        <input type="file" name="image" accept="image/*" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="flex space-x-4 mt-6">
+                    <button type="submit" class="btn-primary flex-1">Save Post</button>
+                    <button type="button" onclick="closeModal()" class="btn-secondary flex-1">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    let currentPostId = null;
+
+    // Check authentication
+    document.addEventListener('DOMContentLoaded', function() {
+        const token = localStorage.getItem('admin_token');
+        if (!token) {
+            window.location.href = '/admin/login';
+            return;
+        }
+
+        // Verify token
+        fetch('/api/auth/verify', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Invalid token');
+            }
+            return response.json();
+        })
+        .then(data => {
+            loadBlogPosts();
+        })
+        .catch(error => {
+            console.error('Auth error:', error);
+            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_user');
+            window.location.href = '/admin/login';
+        });
+    });
+
+    // Load blog posts
+    async function loadBlogPosts() {
+        try {
+            const response = await fetch('/api/blog');
+            const posts = await response.json();
+            
+            const grid = document.getElementById('blog-grid');
+            grid.innerHTML = posts.map(post => `
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+                    <div class="flex">
+                        <div class="w-48 h-32 flex-shrink-0">
+                            ${post.image_url ? 
+                                `<img src="${post.image_url}" alt="${post.title}" class="w-full h-full object-cover">` : 
+                                `<div class="w-full h-full bg-gray-100 flex items-center justify-center">
+                                    <i class="fas fa-image text-gray-400 text-2xl"></i>
+                                </div>`
+                            }
+                        </div>
+                        <div class="flex-1 p-6">
+                            <div class="flex justify-between items-start mb-3">
+                                <h3 class="text-xl font-semibold text-gray-900 leading-tight">${post.title}</h3>
+                                <div class="flex space-x-2 ml-4">
+                                    <button onclick="editPost(${post.id})" class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-700 text-sm font-medium rounded-md hover:bg-blue-100 transition-colors">
+                                        <i class="fas fa-edit mr-1.5"></i>Edit
+                                    </button>
+                                    <button onclick="deletePost(${post.id})" class="inline-flex items-center px-3 py-1.5 bg-red-50 text-red-700 text-sm font-medium rounded-md hover:bg-red-100 transition-colors">
+                                        <i class="fas fa-trash mr-1.5"></i>Delete
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex items-center text-sm text-gray-500 mb-3">
+                                <i class="fas fa-user mr-2"></i>
+                                <span class="mr-4">By ${post.author}</span>
+                                <i class="fas fa-calendar mr-2"></i>
+                                <span>${new Date(post.created_at).toLocaleDateString()}</span>
+                            </div>
+                            <p class="text-gray-600 leading-relaxed">${post.content.substring(0, 200)}${post.content.length > 200 ? '...' : ''}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        } catch (error) {
+            console.error('Error loading blog posts:', error);
+        }
+    }
+
+    // Modal functions
+    function openAddModal() {
+        currentPostId = null;
+        document.getElementById('modal-title').textContent = 'New Blog Post';
+        document.getElementById('blog-form').reset();
+        document.querySelector('[name="author"]').value = 'Admin';
+        document.getElementById('blog-modal').classList.remove('hidden');
+        document.getElementById('blog-modal').classList.add('flex');
+    }
+
+    function closeModal() {
+        document.getElementById('blog-modal').classList.add('hidden');
+        document.getElementById('blog-modal').classList.remove('flex');
+    }
+
+    // Handle form submission
+    document.getElementById('blog-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const token = localStorage.getItem('admin_token');
+        
+        try {
+            const url = currentPostId ? `/api/blog/${currentPostId}` : '/api/blog';
+            const method = currentPostId ? 'PUT' : 'POST';
+            
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
+            });
+            
+            if (response.ok) {
+                closeModal();
+                loadBlogPosts();
+            } else {
+                alert('Error saving blog post');
+            }
+        } catch (error) {
+            console.error('Error saving blog post:', error);
+            alert('Error saving blog post');
+        }
+    });
+
+    // Edit post
+    async function editPost(id) {
+        try {
+            const response = await fetch(`/api/blog/${id}`);
+            const post = await response.json();
+            
+            currentPostId = id;
+            document.getElementById('modal-title').textContent = 'Edit Blog Post';
+            document.querySelector('[name="title"]').value = post.title;
+            document.querySelector('[name="author"]').value = post.author;
+            document.querySelector('[name="content"]').value = post.content;
+            
+            document.getElementById('blog-modal').classList.remove('hidden');
+            document.getElementById('blog-modal').classList.add('flex');
+        } catch (error) {
+            console.error('Error loading blog post:', error);
+        }
+    }
+
+    // Delete post
+    async function deletePost(id) {
+        if (!confirm('Are you sure you want to delete this blog post?')) return;
+        
+        const token = localStorage.getItem('admin_token');
+        
+        try {
+            const response = await fetch(`/api/blog/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            
+            if (response.ok) {
+                loadBlogPosts();
+            } else {
+                alert('Error deleting blog post');
+            }
+        } catch (error) {
+            console.error('Error deleting blog post:', error);
+            alert('Error deleting blog post');
+        }
+    }
+
+    // Logout function
+    function logout() {
+        localStorage.removeItem('admin_token');
+        localStorage.removeItem('admin_user');
+        window.location.href = '/admin/login';
+    }
+    </script>
+</body>
+</html>

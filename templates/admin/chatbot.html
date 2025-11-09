@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Settings - Sinfini Marketing FZC</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-navy-800 text-white">
+            <div class="p-6">
+                <div class="flex items-center space-x-2 mb-8">
+                    <i class="fas fa-industry text-gold-500 text-2xl"></i>
+                    <span class="text-xl font-bold">Sinfini Admin</span>
+                </div>
+                
+                <nav class="space-y-2">
+                    <a href="/admin/dashboard" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-navy-700 transition-colors">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="/admin/products" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-navy-700 transition-colors">
+                        <i class="fas fa-box"></i>
+                        <span>Products</span>
+                    </a>
+                    <a href="/admin/blog" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-navy-700 transition-colors">
+                        <i class="fas fa-edit"></i>
+                        <span>Blog</span>
+                    </a>
+                    <a href="/admin/gallery" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-navy-700 transition-colors">
+                        <i class="fas fa-images"></i>
+                        <span>Gallery</span>
+                    </a>
+                    <a href="/admin/chatbot" class="flex items-center space-x-3 p-3 rounded-lg bg-gold-600 text-navy-900 font-medium">
+                        <i class="fas fa-robot"></i>
+                        <span>Chatbot</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="absolute bottom-0 w-64 p-6">
+                <button onclick="logout()" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-navy-700 transition-colors w-full text-left">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-auto">
+            <div class="p-8">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-navy-800">Chatbot Settings</h1>
+                    <p class="text-gray-600 mt-2">Configure your website chatbot</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Settings Form -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-cog text-blue-600"></i>
+                            </div>
+                            <h2 class="text-xl font-semibold text-gray-900">Chatbot Configuration</h2>
+                        </div>
+                        
+                        <form id="chatbot-form">
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Greeting Message</label>
+                                    <textarea id="greeting" rows="3" class="form-control" placeholder="Hello! How can I help you today?"></textarea>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="text-lg font-medium text-gray-800 mb-4">FAQ Responses</h3>
+                                    <div id="faq-container">
+                                        <!-- FAQ items will be loaded here -->
+                                    </div>
+                                    <button type="button" onclick="addFAQ()" class="btn-secondary mt-4">
+                                        <i class="fas fa-plus mr-2"></i>Add FAQ
+                                    </button>
+                                </div>
+                                
+                                <button type="submit" class="btn-primary w-full">
+                                    <i class="fas fa-save mr-2"></i>Save Settings
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Preview -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-eye text-green-600"></i>
+                            </div>
+                            <h2 class="text-xl font-semibold text-gray-900">Live Preview</h2>
+                        </div>
+                        
+                        <div class="border rounded-lg p-4 bg-gray-50 h-96 flex flex-col">
+                            <div class="flex-1 overflow-y-auto mb-4" id="chat-preview">
+                                <div class="bg-blue-100 p-3 rounded-lg mb-2">
+                                    <p id="preview-greeting">Hello! How can I help you today?</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex">
+                                <input type="text" id="test-message" placeholder="Type a test message..." class="form-control mr-2">
+                                <button onclick="testMessage()" class="btn-primary">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+    let faqs = [];
+
+    // Check authentication
+    document.addEventListener('DOMContentLoaded', function() {
+        const token = localStorage.getItem('admin_token');
+        if (!token) {
+            window.location.href = '/admin/login';
+            return;
+        }
+
+        // Verify token
+        fetch('/api/auth/verify', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Invalid token');
+            }
+            return response.json();
+        })
+        .then(data => {
+            loadChatbotSettings();
+        })
+        .catch(error => {
+            console.error('Auth error:', error);
+            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_user');
+            window.location.href = '/admin/login';
+        });
+    });
+
+    // Load chatbot settings
+    async function loadChatbotSettings() {
+        try {
+            const response = await fetch('/api/chatbot/settings');
+            const settings = await response.json();
+            
+            document.getElementById('greeting').value = settings.greeting || 'Hello! How can I help you today?';
+            document.getElementById('preview-greeting').textContent = settings.greeting || 'Hello! How can I help you today?';
+            
+            faqs = JSON.parse(settings.faqs || '[]');
+            renderFAQs();
+        } catch (error) {
+            console.error('Error loading chatbot settings:', error);
+        }
+    }
+
+    // Render FAQ items
+    function renderFAQs() {
+        const container = document.getElementById('faq-container');
+        container.innerHTML = faqs.map((faq, index) => `
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-5 mb-4 hover:bg-gray-100 transition-colors">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                            <span class="text-blue-600 text-sm font-semibold">${index + 1}</span>
+                        </div>
+                        <h4 class="font-semibold text-gray-900">FAQ Item ${index + 1}</h4>
+                    </div>
+                    <button onclick="removeFAQ(${index})" class="inline-flex items-center px-2 py-1 bg-red-50 text-red-600 text-sm rounded-md hover:bg-red-100 transition-colors">
+                        <i class="fas fa-trash mr-1"></i>Remove
+                    </button>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Trigger Keywords</label>
+                        <input type="text" value="${faq.keywords.join(', ')}" onchange="updateFAQ(${index}, 'keywords', this.value)" class="form-control" placeholder="e.g., price, cost, pricing">
+                        <p class="text-xs text-gray-500 mt-1">Separate multiple keywords with commas</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Response Message</label>
+                        <textarea rows="3" onchange="updateFAQ(${index}, 'answer', this.value)" class="form-control" placeholder="Enter the chatbot's response...">${faq.answer}</textarea>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Add new FAQ
+    function addFAQ() {
+        faqs.push({
+            keywords: [],
+            answer: ''
+        });
+        renderFAQs();
+    }
+
+    // Remove FAQ
+    function removeFAQ(index) {
+        faqs.splice(index, 1);
+        renderFAQs();
+    }
+
+    // Update FAQ
+    function updateFAQ(index, field, value) {
+        if (field === 'keywords') {
+            faqs[index][field] = value.split(',').map(k => k.trim()).filter(k => k);
+        } else {
+            faqs[index][field] = value;
+        }
+    }
+
+    // Handle form submission
+    document.getElementById('chatbot-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const greeting = document.getElementById('greeting').value;
+        const token = localStorage.getItem('admin_token');
+        
+        try {
+            const response = await fetch('/api/chatbot/settings', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    greeting: greeting,
+                    faqs: faqs
+                })
+            });
+            
+            if (response.ok) {
+                alert('Settings saved successfully!');
+                document.getElementById('preview-greeting').textContent = greeting;
+            } else {
+                alert('Error saving settings');
+            }
+        } catch (error) {
+            console.error('Error saving settings:', error);
+            alert('Error saving settings');
+        }
+    });
+
+    // Test message
+    async function testMessage() {
+        const message = document.getElementById('test-message').value;
+        if (!message) return;
+        
+        const chatPreview = document.getElementById('chat-preview');
+        
+        // Add user message
+        chatPreview.innerHTML += `
+            <div class="text-right mb-2">
+                <div class="bg-gold-100 p-3 rounded-lg inline-block">
+                    <p>${message}</p>
+                </div>
+            </div>
+        `;
+        
+        try {
+            const response = await fetch('/api/chatbot/message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: message })
+            });
+            
+            const result = await response.json();
+            
+            // Add bot response
+            chatPreview.innerHTML += `
+                <div class="mb-2">
+                    <div class="bg-blue-100 p-3 rounded-lg inline-block">
+                        <p>${result.response}</p>
+                    </div>
+                </div>
+            `;
+            
+            chatPreview.scrollTop = chatPreview.scrollHeight;
+            document.getElementById('test-message').value = '';
+        } catch (error) {
+            console.error('Error testing message:', error);
+        }
+    }
+
+    // Allow Enter key to send test message
+    document.getElementById('test-message').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            testMessage();
+        }
+    });
+
+    // Logout function
+    function logout() {
+        localStorage.removeItem('admin_token');
+        localStorage.removeItem('admin_user');
+        window.location.href = '/admin/login';
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+Build a fully responsive and professional React website for a textile export company named Sinfini Marketing FZC, headquartered in Sharjah, UAE.
+
+The company specializes in exporting premium cotton and synthetic ladies’ fabrics, garments, linens, and terry toweling products to international markets across Asia, Africa, and Europe.
+
+✅ Required Website Pages
+
+Home (hero slider + company intro + product highlights + CTA section)
+
+About Us (company profile, mission, vision, values)
+
+Products (grid layout with images, titles, short description, and view details modal)
+
+Gallery (image + video showcase)
+
+Blog (list and detailed view)
+
+Contact Us (form + Google Map embed + company address)
+
+✅ Admin Panel Requirements
+
+Secure Admin Login & Logout
+
+Add/Edit/Delete Products
+
+Add/Edit/Delete Blog Posts
+
+Upload Images & Videos for Gallery
+
+WYSIWYG Editor for blogs/content
+
+Media Upload (images & videos stored in cloud or local server)
+
+Dashboard overview (posts, products, uploads)
+
+Chatbot settings (enable/disable, edit welcome message)
+
+✅ Chatbot
+
+Customer support chatbot icon in front-end
+
+Chatbot opens a floating chat widget
+
+Basic greeting + FAQs
+
+✅ Tech Stack Requirements
+
+Frontend: React + Tailwind CSS + React Router
+
+Backend: Node.js + Express
+
+Database: MongoDB (or Firebase)
+
+Authentication: JWT Auth
+
+File Uploads: Multer (or Firebase storage)
+
+✅ UI/UX
+
+Corporate clean design
+
+Elegant export-industry theme
+
+Colors: navy, gold, white
+
+Smooth animations + responsive layout
+
+Sticky navbar + footer with social links
+
+Make the UI modern, very premium, and corporate.
+This is for a real international textile export company — so quality should be high.

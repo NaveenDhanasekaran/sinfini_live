@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Sinfini Marketing FZC{% endblock %}
+
+{% block content %}
+<!-- Hero Slider - Exact React match -->
+<div class="pt-20">
+    <div class="relative h-600 overflow-hidden">
+        <div class="hero-slide">
+            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ url_for('static', filename='image/Bannerhero.jpg') }}');">
+                <div class="absolute inset-0 bg-gradient-to-r from-navy-950-90 to-navy-900-70"></div>
+            </div>
+            <div class="hero-content">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                    <div class="max-w-3xl">
+                        <h1 class="hero-title animate-fade-in">
+                            Premium Textile Exports
+                        </h1>
+                        <p class="hero-subtitle">
+                            Quality fabrics for international markets
+                        </p>
+                        <a href="{{ url_for('products') }}" class="inline-flex items-center space-x-2 bg-gold-500 hover:bg-gold-600 text-navy-900 px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+                            <span>Explore Products</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-navy-800 mb-4">Why Choose Sinfini Marketing?</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                We are committed to delivering exceptional textile products with unmatched quality and service
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center card-hover bg-gray-50 p-8 rounded-xl">
+                <div class="bg-gold-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-award text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-navy-800 mb-3">Premium Quality</h3>
+                <p class="text-gray-600">
+                    We source and export only the finest textile products, ensuring exceptional quality in every shipment.
+                </p>
+            </div>
+            
+            <div class="text-center card-hover bg-gray-50 p-8 rounded-xl">
+                <div class="bg-gold-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-shipping-fast text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-navy-800 mb-3">Global Delivery</h3>
+                <p class="text-gray-600">
+                    Reliable worldwide shipping with tracking and timely delivery to your doorstep.
+                </p>
+            </div>
+            
+            <div class="text-center card-hover bg-gray-50 p-8 rounded-xl">
+                <div class="bg-gold-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-headset text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-navy-800 mb-3">24/7 Support</h3>
+                <p class="text-gray-600">
+                    Our dedicated team is always ready to assist you with your textile export needs.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-navy-800 mb-4">Featured Products</h2>
+            <p class="text-xl text-gray-600">Discover our premium textile collection</p>
+        </div>
+        
+        <div class="product-grid" id="featured-products">
+            <!-- Hardcoded Featured Products -->
+            <div class="product-card">
+                <img src="{{ url_for('static', filename='image/Cotton 3pc Bed Sheets/PHOTO-2025-11-02-14-38-54.jpg') }}" alt="Cotton 3pc Bed Sheets" class="product-image">
+                <div class="p-6">
+                    <div class="mb-2">
+                        <span class="bg-gold-100 text-gold-800 px-2 py-1 rounded-full text-xs font-medium">Bed Linens</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy-800 mb-2">Cotton 3pc Bed Sheets</h3>
+                    <p class="text-gray-600 text-sm line-clamp-3">Premium quality cotton bed sheets set including fitted sheet, flat sheet, and pillowcase. Soft, breathable, and durable fabric perfect for comfortable sleep.</p>
+                    <div class="mt-4">
+                        <span class="text-gold-600 font-semibold hover:text-gold-700">View Details →</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <img src="{{ url_for('static', filename='image/Cotton Towels/PHOTO-2025-11-02-14-40-11.jpg') }}" alt="Cotton Towels" class="product-image">
+                <div class="p-6">
+                    <div class="mb-2">
+                        <span class="bg-gold-100 text-gold-800 px-2 py-1 rounded-full text-xs font-medium">Bath Linens</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy-800 mb-2">Premium Cotton Towels</h3>
+                    <p class="text-gray-600 text-sm line-clamp-3">High-quality cotton towels with excellent absorbency and softness. Available in various sizes and colors, perfect for hotels and homes.</p>
+                    <div class="mt-4">
+                        <span class="text-gold-600 font-semibold hover:text-gold-700">View Details →</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <img src="{{ url_for('static', filename='image/Mystic Ready Made Indian Salwar/PHOTO-2025-11-02-14-36-49.jpg') }}" alt="Mystic Ready Made Indian Salwar" class="product-image">
+                <div class="p-6">
+                    <div class="mb-2">
+                        <span class="bg-gold-100 text-gold-800 px-2 py-1 rounded-full text-xs font-medium">Ladies Garments</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy-800 mb-2">Mystic Ready Made Indian Salwar</h3>
+                    <p class="text-gray-600 text-sm line-clamp-3">Beautiful traditional Indian salwar suits with intricate designs and premium fabric. Perfect for cultural events and daily wear.</p>
+                    <div class="mt-4">
+                        <span class="text-gold-600 font-semibold hover:text-gold-700">View Details →</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <img src="{{ url_for('static', filename='image/Cotton 3pc Bed Sheets/PHOTO-2025-11-02-14-39-00.jpg') }}" alt="Luxury Bed Sheets" class="product-image">
+                <div class="p-6">
+                    <div class="mb-2">
+                        <span class="bg-gold-100 text-gold-800 px-2 py-1 rounded-full text-xs font-medium">Bed Linens</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy-800 mb-2">Luxury Cotton Bed Sheets</h3>
+                    <p class="text-gray-600 text-sm line-clamp-3">Luxurious cotton bed sheets with elegant patterns and superior comfort. Thread count optimized for durability and softness.</p>
+                    <div class="mt-4">
+                        <span class="text-gold-600 font-semibold hover:text-gold-700">View Details →</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <img src="{{ url_for('static', filename='image/Cotton Towels/PHOTO-2025-11-02-14-40-13.jpg') }}" alt="Bath Towel Set" class="product-image">
+                <div class="p-6">
+                    <div class="mb-2">
+                        <span class="bg-gold-100 text-gold-800 px-2 py-1 rounded-full text-xs font-medium">Bath Linens</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy-800 mb-2">Deluxe Bath Towel Set</h3>
+                    <p class="text-gray-600 text-sm line-clamp-3">Complete bath towel set with superior absorption and quick-dry technology. Ideal for luxury hotels and premium residential use.</p>
+                    <div class="mt-4">
+                        <span class="text-gold-600 font-semibold hover:text-gold-700">View Details →</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <img src="{{ url_for('static', filename='image/Mystic Ready Made Indian Salwar/PHOTO-2025-11-02-14-36-51 4.jpg') }}" alt="Designer Salwar Suit" class="product-image">
+                <div class="p-6">
+                    <div class="mb-2">
+                        <span class="bg-gold-100 text-gold-800 px-2 py-1 rounded-full text-xs font-medium">Ladies Garments</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy-800 mb-2">Designer Salwar Suit</h3>
+                    <p class="text-gray-600 text-sm line-clamp-3">Elegant designer salwar suit with contemporary styling and traditional craftsmanship. Perfect for special occasions and festivities.</p>
+                    <div class="mt-4">
+                        <span class="text-gold-600 font-semibold hover:text-gold-700">View Details →</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-12">
+            <a href="{{ url_for('products') }}" class="btn-primary text-lg px-8 py-4">
+                View All Products <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-16 bg-navy-800 text-white">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div>
+                <div class="text-4xl font-bold text-gold-400 mb-2">500+</div>
+                <div class="text-lg">Happy Clients</div>
+            </div>
+            <div>
+                <div class="text-4xl font-bold text-gold-400 mb-2">50+</div>
+                <div class="text-lg">Countries Served</div>
+            </div>
+            <div>
+                <div class="text-4xl font-bold text-gold-400 mb-2">1000+</div>
+                <div class="text-lg">Products Exported</div>
+            </div>
+            <div>
+                <div class="text-4xl font-bold text-gold-400 mb-2">10+</div>
+                <div class="text-lg">Years Experience</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-4xl font-bold text-navy-800 mb-4">Ready to Start Your Order?</h2>
+        <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            Get in touch with our team today and let us help you find the perfect textile products for your business.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{{ url_for('contact') }}" class="btn-primary text-lg px-8 py-4">
+                <i class="fas fa-envelope mr-2"></i>Contact Us
+            </a>
+            <a href="{{ url_for('about') }}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-8 py-4 rounded-lg transition-colors text-lg">
+                <i class="fas fa-info-circle mr-2"></i>Learn More
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Product Modal -->
+<div id="product-modal" class="modal">
+    <div class="modal-content">
+        <!-- Content will be loaded dynamically -->
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Products are now hardcoded in HTML, no dynamic loading needed -->
+{% endblock %}

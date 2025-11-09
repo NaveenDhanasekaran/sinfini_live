@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Blog - Sinfini Marketing FZC{% endblock %}
+
+{% block content %}
+<!-- Hero Section - Match React styling -->
+<div class="pt-20">
+    <section class="relative h-96 bg-gradient-to-r from-navy-900 to-navy-800 text-white">
+        <div class="absolute inset-0 opacity-20">
+            <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=1200" alt="Blog" class="w-full h-full object-cover">
+        </div>
+        <div class="relative h-full flex items-center">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-center">
+                <h1 class="text-5xl md:text-6xl font-bold mb-4">Our Blog</h1>
+                <p class="text-xl text-gold-300">
+                    Stay updated with the latest news and insights from the textile industry
+                </p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Blog Posts Section -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <!-- Blog Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-container">
+            <!-- Blog posts will be loaded here -->
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading" class="text-center py-12">
+            <div class="loading mx-auto mb-4"></div>
+            <p class="text-gray-600">Loading blog posts...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="text-center py-12 hidden">
+            <i class="fas fa-newspaper text-6xl text-gray-300 mb-4"></i>
+            <h3 class="text-xl font-semibold text-gray-600 mb-2">No blog posts found</h3>
+            <p class="text-gray-500">Check back later for new articles.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Load blog posts on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadBlogPosts();
+});
+
+// Load blog posts from API
+async function loadBlogPosts() {
+    try {
+        const response = await fetch('/api/blog');
+        const posts = await response.json();
+        
+        document.getElementById('loading').classList.add('hidden');
+        displayBlogPosts(posts);
+    } catch (error) {
+        console.error('Error loading blog posts:', error);
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('empty-state').classList.remove('hidden');
+    }
+}
+
+// Display blog posts
+function displayBlogPosts(posts) {
+    const container = document.getElementById('blog-container');
+    const emptyState = document.getElementById('empty-state');
+    
+    if (posts.length === 0) {
+        container.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+    }
+    
+    emptyState.classList.add('hidden');
+    
+    container.innerHTML = posts.map(post => `
+        <article class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+            ${post.image_url ? `
+                <img src="${post.image_url}" alt="${post.title}" class="w-full h-48 object-cover">
+            ` : `
+                <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                    <i class="fas fa-newspaper text-gray-400 text-4xl"></i>
+                </div>
+            `}
+            <div class="p-6">
+                <div class="flex items-center text-sm text-gray-500 mb-3">
+                    <i class="fas fa-user mr-2"></i>
+                    <span class="mr-4">${post.author}</span>
+                    <i class="fas fa-calendar mr-2"></i>
+                    <span>${new Date(post.created_at).toLocaleDateString()}</span>
+                </div>
+                
+                <h2 class="text-xl font-bold text-navy-800 mb-3 line-clamp-2">
+                    <a href="/blog/${post.id}" class="hover:text-gold-600 transition-colors">
+                        ${post.title}
+                    </a>
+                </h2>
+                
+                <p class="text-gray-600 mb-4 line-clamp-3">
+                    ${post.content.replace(/<[^>]*>/g, '').substring(0, 150)}...
+                </p>
+                
+                <a href="/blog/${post.id}" class="inline-flex items-center text-gold-600 hover:text-gold-700 font-semibold transition-colors">
+                    Read More
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </article>
+    `).join('');
+}
+</script>
+{% endblock %}

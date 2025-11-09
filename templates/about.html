@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - Sinfini Marketing FZC{% endblock %}
+
+{% block content %}
+<!-- Hero Section - Match React styling -->
+<div class="pt-20">
+    <section class="relative h-96 bg-gradient-to-r from-navy-900 to-navy-800 text-white">
+        <div class="absolute inset-0 opacity-20">
+            <img src="{{ url_for('static', filename='image/Bannerhero.jpg') }}" alt="About" class="w-full h-full object-cover">
+        </div>
+        <div class="relative h-full flex items-center">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-center">
+                <h1 class="text-5xl md:text-6xl font-bold mb-4">About Us</h1>
+                <p class="text-xl text-gold-300">
+                    Excellence in Textile Exports Since Inception
+                </p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Company Profile - Match React styling -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="text-4xl font-bold text-navy-900 mb-6">
+                    Sinfini Marketing FZC
+                </h2>
+                <div class="w-24 h-1 bg-gold-500 mb-6"></div>
+                <p class="text-lg text-navy-700 mb-4">
+                    Based in Sharjah, United Arab Emirates, Sinfini Marketing FZC is a leading textile export company specializing in premium cotton and synthetic ladies' fabrics, garments, linens, and terry toweling products.
+                </p>
+                <p class="text-lg text-navy-700 mb-4">
+                    We serve international markets across Asia, Africa, and Europe, delivering excellence in quality and service. Our commitment to customer satisfaction and product excellence has made us a trusted partner in the global textile industry.
+                </p>
+                <p class="text-lg text-navy-700">
+                    With a focus on innovation and sustainability, we continue to expand our product range and market reach, ensuring our clients receive the best textiles at competitive prices.
+                </p>
+            </div>
+            <div class="relative h-96 rounded-xl overflow-hidden shadow-2xl">
+                <img src="{{ url_for('static', filename='image/AboutUs.jpg') }}" alt="Company" class="w-full h-full object-cover">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gold-500 rounded-xl p-12 text-white text-center">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="text-4xl font-bold mb-2">10+</div>
+                    <div class="text-gold-100">Years Experience</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold mb-2">50+</div>
+                    <div class="text-gold-100">Countries Served</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold mb-2">500+</div>
+                    <div class="text-gold-100">Happy Clients</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold mb-2">1000+</div>
+                    <div class="text-gold-100">Products Exported</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mission, Vision, Values -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-navy-800 mb-4">Our Foundation</h2>
+            <p class="text-xl text-gray-600">The principles that guide our business</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Mission -->
+            <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                <div class="bg-navy-800 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-bullseye text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-navy-800 mb-4 text-center">Our Mission</h3>
+                <p class="text-gray-600 text-center leading-relaxed">
+                    To provide exceptional textile products and services that exceed customer expectations while building sustainable partnerships across global markets.
+                </p>
+            </div>
+            
+            <!-- Vision -->
+            <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                <div class="bg-gold-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-eye text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-navy-800 mb-4 text-center">Our Vision</h3>
+                <p class="text-gray-600 text-center leading-relaxed">
+                    To become the leading textile export company in the Middle East, recognized for quality, reliability, and innovation in serving global markets.
+                </p>
+            </div>
+            
+            <!-- Values -->
+            <div class="bg-white p-8 rounded-xl shadow-lg card-hover">
+                <div class="bg-navy-800 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-heart text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-navy-800 mb-4 text-center">Our Values</h3>
+                <p class="text-gray-600 text-center leading-relaxed">
+                    Integrity, quality, customer focus, and continuous improvement drive everything we do in building lasting business relationships.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-navy-800 mb-4">Why Choose Sinfini Marketing?</h2>
+            <p class="text-xl text-gray-600">What sets us apart in the textile export industry</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="text-center">
+                <div class="bg-gold-100 text-gold-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-certificate text-3xl"></i>
+                </div>
+                <h3 class="text-lg font-bold text-navy-800 mb-2">Quality Assurance</h3>
+                <p class="text-gray-600 text-sm">
+                    Rigorous quality control processes ensure every product meets international standards.
+                </p>
+            </div>
+            
+            <div class="text-center">
+                <div class="bg-gold-100 text-gold-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-globe text-3xl"></i>
+                </div>
+                <h3 class="text-lg font-bold text-navy-800 mb-2">Global Network</h3>
+                <p class="text-gray-600 text-sm">
+                    Extensive network of suppliers and logistics partners worldwide.
+                </p>
+            </div>
+            
+            <div class="text-center">
+                <div class="bg-gold-100 text-gold-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-clock text-3xl"></i>
+                </div>
+                <h3 class="text-lg font-bold text-navy-800 mb-2">Timely Delivery</h3>
+                <p class="text-gray-600 text-sm">
+                    Reliable shipping and logistics ensure your orders arrive on time.
+                </p>
+            </div>
+            
+            <div class="text-center">
+                <div class="bg-gold-100 text-gold-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-handshake text-3xl"></i>
+                </div>
+                <h3 class="text-lg font-bold text-navy-800 mb-2">Personal Service</h3>
+                <p class="text-gray-600 text-sm">
+                    Dedicated account managers provide personalized attention to your needs.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-navy-800 mb-4">Our Team</h2>
+            <p class="text-xl text-gray-600">Dedicated professionals driving our success</p>
+        </div>
+        
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white p-8 rounded-xl shadow-lg">
+                <div class="text-center mb-8">
+                    <div class="w-20 h-20 bg-navy-800 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-users text-white text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-navy-800 mb-4">Expert Team Members</h3>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-lg font-bold text-navy-800 mb-3">Our Leadership</h4>
+                        <p class="text-gray-600 mb-4">
+                            Our experienced management team brings decades of expertise in international textile trade, 
+                            ensuring strategic direction and operational excellence in every aspect of our business.
+                        </p>
+                        <ul class="text-gray-600 space-y-2">
+                            <li><i class="fas fa-check text-gold-500 mr-2"></i>Strategic business planning</li>
+                            <li><i class="fas fa-check text-gold-500 mr-2"></i>International market expertise</li>
+                            <li><i class="fas fa-check text-gold-500 mr-2"></i>Quality assurance oversight</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-bold text-navy-800 mb-3">Our Operations Team</h4>
+                        <p class="text-gray-600 mb-4">
+                            Our dedicated operations and logistics professionals ensure seamless execution of orders, 
+                            from sourcing premium textiles to timely delivery across global markets.
+                        </p>
+                        <ul class="text-gray-600 space-y-2">
+                            <li><i class="fas fa-check text-gold-500 mr-2"></i>Supply chain management</li>
+                            <li><i class="fas fa-check text-gold-500 mr-2"></i>Export documentation</li>
+                            <li><i class="fas fa-check text-gold-500 mr-2"></i>Customer relationship management</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 bg-navy-800 text-white">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold mb-4">Ready to Work With Us?</h2>
+        <p class="text-xl text-gray-200 mb-8 max-w-2xl mx-auto">
+            Join hundreds of satisfied customers who trust Sinfini Marketing for their textile export needs.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{{ url_for('contact') }}" class="btn-primary text-lg px-8 py-4">
+                <i class="fas fa-envelope mr-2"></i>Get in Touch
+            </a>
+            <a href="{{ url_for('products') }}" class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-navy-800 px-8 py-4 rounded-lg transition-colors text-lg">
+                <i class="fas fa-eye mr-2"></i>View Products
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
